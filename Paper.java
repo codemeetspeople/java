@@ -23,7 +23,17 @@ public class Paper {
         return out.toString();
     }
 
-    public void addContent(String message) {
+    public void addContent(String message) throws OutOfSpaceException
+    {
+        int available = this.maxSymbols - this.content.length();
+        
+        if ( available == 0 ) {
+            throw new OutOfSpaceException();
+        }
+        if ( message.length() > available ) {
+            this.content.append(message.substring(0, available));
+            throw new OutOfSpaceException();
+        }
         this.content.append(message);
     }
 
@@ -31,7 +41,8 @@ public class Paper {
         System.out.println(this.content);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws OutOfSpaceException
+    {
         Paper paper = new Paper();
 
         System.out.println(paper);

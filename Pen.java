@@ -23,12 +23,22 @@ public class Pen {
         return out.toString();
     }
 
-    public void write(Paper paper, String message) {
+    public void write(Paper paper, String message) throws OutOfInkException, OutOfSpaceException
+    {
+        if ( this.symbols == 0 ) {
+            throw new OutOfInkException();
+        }
+        if ( message.length() > this.symbols ) {
+            paper.addContent(message.substring(0, this.symbols));
+            this.symbols = 0;
+            throw new OutOfInkException();
+        }
         paper.addContent(message);
         this.symbols -= message.length();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws OutOfInkException, OutOfSpaceException
+    {
         Pen pen = new Pen();
         Paper paper = new Paper();
 
